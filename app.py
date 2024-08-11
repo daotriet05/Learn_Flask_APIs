@@ -30,8 +30,9 @@ def index():
         tasks = Todo.query.order_by(Todo.date_created).all()
         return render_template('index.html', tasks=tasks)
 
-@app.route('/delete/<int:id>', methods=['GET'])
-def delete(id):
+@app.route('/delete', methods=['POST'])
+def delete():
+    id = request.form['id']
     task_to_delete = Todo.query.get_or_404(id)
 
     try:
@@ -39,7 +40,7 @@ def delete(id):
         db.session.commit()
         return redirect('/')
     except:
-        return 'There was a problem deleting the task'
+        return 'There was an issue deleting the task'
     
 @app.route('/update/<int:id>', methods=['POST', 'GET'])
 def update(id):
